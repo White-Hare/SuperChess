@@ -37,18 +37,8 @@ void Game::load_assets()
 	tiles->load_texture("assets/tile.png", renderer);
 
 	whitePawns = new Pawns("WP", map_rect, rows, columns, offset);
-	//whitePawns->load_texture("assets/WhitePawn.png", renderer);
-    whitePawns->create_blank_texture(renderer, 64, 64);
-
-    whitePawns->scale(tile_length);
-
-	whitePawns->set_render_target(renderer);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
-
-	filledCircleRGBA(renderer, 10, 10, 10, 0, 0, 255, 255);
-    
-
-	SDL_SetRenderTarget(renderer, nullptr);
+	whitePawns->load_texture("assets/WhitePawn.png", renderer);
+   	whitePawns->scale(tile_length);
 
 
 	blackPawns = new Pawns("BP", map_rect, rows, columns, offset);
