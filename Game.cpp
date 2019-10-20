@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "Pistol.h"
 
-#include <gfx/SDL2_gfxPrimitives.h>
 
 #define WIDTH 600
 #define HEIGHT 600
