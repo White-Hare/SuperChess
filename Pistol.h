@@ -5,15 +5,15 @@
 
 const int pistol_velocity = 400;
 
-inline void pistol(SDL_Rect* rect, Direction direction, float delta)
+inline void pistol(SDL_Rect* rect, int angle, float delta)
 {
-    if(direction == RIGHT)
+    if(angle == RIGHT)
 	    rect->x += pistol_velocity * delta;
-	if (direction == LEFT)
+	if (angle == LEFT)
 		rect->x -= pistol_velocity * delta;
-	if (direction == UP)
+	if (angle == UP)
 		rect->y -= pistol_velocity * delta;
-	if (direction == DOWN)
+	if (angle == DOWN)
 		rect->y += pistol_velocity * delta;
 }
 

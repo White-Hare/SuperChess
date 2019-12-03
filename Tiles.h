@@ -26,7 +26,7 @@ public:
 	int get_row(int index);
 	int get_column(int index);
 
-	int* getSelectedTiles();
+	int* get_selected_tile();
 
 	void showSelectedTiles(SDL_Renderer* renderer);
 

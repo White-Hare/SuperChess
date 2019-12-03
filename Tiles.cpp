@@ -23,7 +23,7 @@ void Tiles::generateTiles(unsigned tile_length, unsigned rows, unsigned collumns
 	this->scale(tile_length, tile_length);
 
 	for (int i = 0; i < rows* collumns; i++) 
-		this->append_rect((i % rows) * tile_length + offset.x, i / rows * tile_length + offset.y);
+		this->append_rect((i % columns) * tile_length + offset.x, (i / collumns) * tile_length + offset.y);
 
 }
 
@@ -51,7 +51,7 @@ int Tiles::get_column(int index)
 
 
 
-int* Tiles::getSelectedTiles()
+int* Tiles::get_selected_tile()
 {
 	return  selected_tiles;
 }
