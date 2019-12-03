@@ -50,7 +50,7 @@ public:
 	bool create_blank_texture(SDL_Renderer* renderer, int width, int height,SDL_TextureAccess access = SDL_TEXTUREACCESS_TARGET, SDL_Color *color_key = nullptr);
 	void assign_texture(SDL_Texture* texture, SDL_Rect *rect, SDL_TextureAccess access, SDL_PixelFormat* format);
 
-	void set_colorkey(SDL_Color colorkey);//FIX IT
+	//void set_colorkey(SDL_Color colorkey);//FIX IT
 
 
     void scale(int width);
@@ -86,6 +86,7 @@ public:
 	SDL_Rect* get_self_rect();
 	bool is_collided(SDL_Rect* rect2);
 	bool is_collided(Circle* circle);
+	bool is_collided(SDL_Point point);
 
 
 	virtual void render( SDL_Rect *camera, SDL_Renderer* renderer, SDL_Rect *clip = nullptr);

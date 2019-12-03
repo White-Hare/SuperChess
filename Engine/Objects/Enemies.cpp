@@ -12,7 +12,7 @@ Enemies::Enemies(const char* ID, SDL_Rect map_rect, int velocity):Character(ID, 
 }
 
 
-void Enemies::behaviour(void (function)(SDL_Rect*, Direction*,int, float, std::vector<SDL_Rect*>, SDL_Rect*), std::vector<Object*> objects, std::vector<MultipleObjects*> multiple_objects, std::vector<Guns*> bullets, float delta, SDL_Rect* target)
+void Enemies::behaviour(void (function)(SDL_Rect*, int,int, float, std::vector<SDL_Rect*>, SDL_Rect*), std::vector<Object*> objects, std::vector<MultipleObjects*> multiple_objects, std::vector<Guns*> bullets, float delta, SDL_Rect* target)
 {
 	for (auto l : locations_) {
 
@@ -36,7 +36,7 @@ void Enemies::behaviour(void (function)(SDL_Rect*, Direction*,int, float, std::v
 
 void Enemies::add_enemy(SDL_Rect rect, Direction direction)
 {
-	locations_.push_back({ new SDL_Rect{rect}, new Direction{direction} });
+	locations_.push_back({ new SDL_Rect{rect}, direction });
 }
 
 void Enemies::add_enemy(int x, int y, Direction direction)
@@ -183,11 +183,14 @@ void Enemies::render(SDL_Rect* camera, SDL_Renderer* renderer, float delta, bool
 	for (int i : collision_list(camera)) {
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
 
+
 		if (flip_at_turn) {
-			if (*locations_[i].second == RIGHT || *locations_[i].second == DOWN_RIGHT || *locations_[i].second == UP_RIGHT)
+
+			if (locations_[i].second == RIGHT || locations_[i].second == DOWN_RIGHT || locations_[i].second == UP_RIGHT)
 				flip = SDL_FLIP_NONE;
-			if (*locations_[i].second == LEFT || *locations_[i].second == UP_LEFT || *locations_[i].second == DOWN_LEFT)
+			if (locations_[i].second == LEFT || locations_[i].second == UP_LEFT || locations_[i].second == DOWN_LEFT)
 				flip = SDL_FLIP_HORIZONTAL;
+
 		}
 
 		SDL_Rect* tmp_rect = new SDL_Rect{ -camera->x + locations_[i].first->x, -camera->y + locations_[i].first->y, locations_[i].first->w, locations_[i].first->h };

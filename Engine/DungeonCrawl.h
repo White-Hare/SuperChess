@@ -18,6 +18,7 @@
 #include "Objects/Guns.h"
 #include "Objects/Enemies.h"
 
+#include "Objects/UI/Buttons.h"
 
 #include "Physics/Vec2D.h"
 

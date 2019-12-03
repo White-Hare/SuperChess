@@ -6,6 +6,7 @@ Guns::Guns(const char* ID, SDL_Rect map_rect, Object *boss) :MultipleObjects(ID,
 {
 	boss_rect_ = boss->get_self_rect();
 	firing_frequency = 0;
+
 }
 Guns::Guns(const char* ID, SDL_Rect map_rect, SDL_Rect* boss) : MultipleObjects(ID, map_rect)
 {
@@ -41,7 +42,7 @@ void Guns::set_firing_frequency(float frequency)
 void Guns::add_bullet()
 {
 	append_rect(new SDL_Rect{ boss_rect_->x + boss_rect_->w/2, boss_rect_->y + boss_rect_->h/2, self_rect->w, self_rect->h });
-	directions_.push_back(RIGHT);
+	angles_.push_back(RIGHT);
 }
 
 const float Guns::get_firing_frequency()
@@ -50,17 +51,17 @@ const float Guns::get_firing_frequency()
 }
 
 
-void Guns::add_bullet(Direction direction)
+void Guns::add_bullet(int angle)
 {
 	append_rect(new SDL_Rect{ boss_rect_->x + boss_rect_->w/2 - self_rect->w/2, boss_rect_->y + boss_rect_->h/2 - self_rect->h/2, self_rect->w, self_rect->h });
-	directions_.push_back(direction);
+	angles_.push_back(angle);
 }
 
 void Guns::erase_rect(int index)
 {
 	try {
 		rects.erase(rects.begin() + index);
-		directions_.erase(directions_.begin() + index);
+		angles_.erase(angles_.begin() + index);
 	}
 	catch (const std::out_of_range& oor)
 	{
@@ -69,10 +70,11 @@ void Guns::erase_rect(int index)
 }
 
 
-void Guns::behavior(void (function)(SDL_Rect*, Direction, float), float delta)
+void Guns::behavior(void (function)(SDL_Rect*, int, float), float delta)
 {
+
 	for (int i = 0; i < rects.size(); i++) {
-		function(rects[i], directions_[i], delta);
+	    function(rects[i], angles_[i], delta);
 
 
 		if ((rects[i]->x + rects[i]->w < map_rect.x || rects[i]->x > map_rect.x + map_rect.w) ||
@@ -87,7 +89,7 @@ void Guns::render(SDL_Rect* camera, SDL_Renderer* renderer, SDL_Rect* clip)
 	for (auto i : collision_list(camera))
 	{
 
-		if (directions_[i] == RIGHT) {
+		if (angles_[i] == RIGHT) {
 			SDL_Rect* tmp_rect = new SDL_Rect{ -camera->x + rects[i]->x, -camera->y + rects[i]->y, rects[i]->w, rects[i]->h };
 			SDL_RenderCopy(renderer, this->texture_, clip, tmp_rect);
 			delete tmp_rect;
@@ -95,7 +97,7 @@ void Guns::render(SDL_Rect* camera, SDL_Renderer* renderer, SDL_Rect* clip)
 
 		else {
 			SDL_Rect* tmp_rect = new SDL_Rect{ -camera->x + rects[i]->x, -camera->y + rects[i]->y, rects[i]->w, rects[i]->h };
-			SDL_RenderCopyEx(renderer, this->texture_, clip, tmp_rect, directions_[i], new SDL_Point{ self_rect->w / 2, self_rect->h / 2 }, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(renderer, this->texture_, clip, tmp_rect, angles_[i], new SDL_Point{ self_rect->w / 2, self_rect->h / 2 }, SDL_FLIP_NONE);
 			delete tmp_rect;
 		}
 	}
@@ -107,7 +109,7 @@ void Guns::render(SDL_Rect* camera, SDL_Renderer* renderer, SDL_RendererFlip fli
 
 	for (auto i : collision_list(camera))
 	{
-		if (directions_[i] == RIGHT) {
+		if (angles_[i] == RIGHT) {
 			if (is_collided(camera)) {
 				SDL_Rect* tmp_rect = new SDL_Rect{ camera->x + rects[i]->x, camera->y + rects[i]->y, rects[i]->w, rects[i]->h };
 				SDL_RenderCopyEx(renderer, this->texture_, clip, tmp_rect, angle, center, flip);
@@ -117,7 +119,7 @@ void Guns::render(SDL_Rect* camera, SDL_Renderer* renderer, SDL_RendererFlip fli
 		else {
 			if (is_collided(camera)) {
 				SDL_Rect* tmp_rect = new SDL_Rect{ camera->x + rects[i]->x, camera->y + rects[i]->y, rects[i]->w, rects[i]->h };
-				SDL_RenderCopyEx(renderer, this->texture_, clip, tmp_rect, directions_[i], new SDL_Point{ self_rect->w / 2, self_rect->h / 2 }, SDL_FLIP_NONE);
+				SDL_RenderCopyEx(renderer, this->texture_, clip, tmp_rect, angles_[i], new SDL_Point{ self_rect->w / 2, self_rect->h / 2 }, SDL_FLIP_NONE);
 				delete tmp_rect;
 			}
 		}
@@ -127,5 +129,5 @@ void Guns::render(SDL_Rect* camera, SDL_Renderer* renderer, SDL_RendererFlip fli
 Guns::~Guns()
 {
 	delete boss_rect_;
-	directions_.clear();
+	angles_.clear();
 }

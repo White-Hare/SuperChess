@@ -291,6 +291,12 @@ bool Object::is_collided(Circle* circle)
 	return false;
 }
 
+bool Object::is_collided(SDL_Point point)
+{
+	return (point.x <= self_rect->x + self_rect->w && point.x >= self_rect->x) &&
+		(point.y <= self_rect->y + self_rect->h && point.y >= self_rect->y);
+}
+
 
 void Object::render(SDL_Rect* camera, SDL_Renderer* renderer, SDL_Rect* clip)
 {
